@@ -1,0 +1,5 @@
+cwb:
+  token: token
+  query:
+    format: json
+    elements: PoP12h,AT,WeatherDescription,PoP6h,Td
