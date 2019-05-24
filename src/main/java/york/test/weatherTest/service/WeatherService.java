@@ -18,9 +18,7 @@ import java.util.Map;
 public class WeatherService {
 
     @Inject
-    private CWBRequestService cwbRequestService;
-    @Inject
-    private WeatherProperties weatherProperties;
+    private RequestCwbService requestCwbService;
     @Inject
     private ParseInfoService parseInfoService;
 
@@ -41,29 +39,13 @@ public class WeatherService {
 
         }
 
-        WeatherResultDTO response = this.requestToCWB();
+        WeatherResultDTO response = requestCwbService.request(city);
         return new ResultBean<>(parseInfoService.parsePoP(response, city, district, timeInterval));
     }
 
     public ResultBean fetchTodayWeatherDesc(String city, String district) throws Exception {
 
-        WeatherResultDTO response = this.requestToCWB();
+        WeatherResultDTO response = requestCwbService.request(city);
         return new ResultBean<>(parseInfoService.weatherDescription(response, city, district));
-    }
-
-    private WeatherResultDTO requestToCWB() throws Exception {
-        Map<String, String> query = weatherProperties.getQuery();
-        Call<WeatherResultDTO> resultDTOCall =
-                cwbRequestService.fetchTaipeiTwoDays(weatherProperties.getToken(), query.get("format"), query.get("elements"));
-
-        Response<WeatherResultDTO> response = resultDTOCall.execute();
-
-        if (!response.isSuccessful()) {
-            throw new Exception("Request weather data failed: " + response.errorBody());
-        } else if (response.body() == null) {
-            throw new NullPointerException("No data can present");
-        }
-
-        return response.body();
     }
 }
