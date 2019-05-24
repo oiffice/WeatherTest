@@ -1,4 +1,4 @@
-package york.test.weatherTest;
+package york.test.weatherTest.service;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -8,7 +8,8 @@ import york.test.weatherTest.dto.WeatherResultDTO;
 public interface CWBRequestService {
 
     /**
-     * Taipei
+     * Taipei 未來三天氣象
+
      * @param authorization
      * @param format
      * @param elements

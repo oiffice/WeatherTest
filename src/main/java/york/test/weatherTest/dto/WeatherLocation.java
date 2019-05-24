@@ -13,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class WeatherLocation implements Serializable {
 
-    private String locationName;
+    @JsonProperty("locationName")
+    private String districts;
     @JsonProperty("geocode")
     private String geoCode;
     private String lat;

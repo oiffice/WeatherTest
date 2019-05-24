@@ -10,7 +10,7 @@ import java.util.List;
 public class WeatherTime implements Serializable {
 
     private String startTime;
-    private String endTim;
+    private String endTime;
     @JsonProperty("elementValue")
     private List<WeatherElementValue> elementValues;
 }

@@ -1,4 +1,4 @@
-package york.test.weatherTest;
+package york.test.weatherTest.enums;
 
 public enum CWBConstants {
 

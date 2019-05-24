@@ -1,4 +1,4 @@
-package york.test.weatherTest;
+package york.test.weatherTest.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import york.test.weatherTest.enums.CWBConstants;
+import york.test.weatherTest.service.CWBRequestService;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;

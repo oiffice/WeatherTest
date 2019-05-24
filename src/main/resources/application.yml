@@ -1,5 +1,5 @@
 cwb:
-  token: token
+  token: CWB-7B96DD3B-49BC-43D9-B778-BA8334FF6E4A
   query:
     format: json
     elements: PoP12h,AT,WeatherDescription,PoP6h,Td
