@@ -1,6 +1,5 @@
 package york.test.weatherTest.service;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 import york.test.weatherTest.dto.WeatherElement;
 import york.test.weatherTest.dto.WeatherResultDTO;
@@ -21,7 +20,7 @@ public class ParseInfoService {
             .format(new Date(System.currentTimeMillis()))
             .split(" ")[0];
 
-    public String parse(WeatherResultDTO result, String city, String district, String type) throws Exception {
+    public String parse(WeatherResultDTO result, String city, String district, String type) {
 
         if (type.equals(CHANCE_OF_RAIN_6_HOURS) || type.equals(CHANCE_OF_RAIN_12_HOURS)) {
             return this.parsePoP(result, city, district, type);
