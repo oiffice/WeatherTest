@@ -13,10 +13,14 @@ public class WeatherService {
     private RequestCwbService requestCwbService;
     @Inject
     private ParseInfoService parseInfoService;
+    @Inject
+    private LineService lineService;
 
     public ResultBean fetchWeatherData(String city, String district, String type) throws Exception {
 
         WeatherResultDTO response = requestCwbService.request(city);
+        String result = parseInfoService.parse(response, city, district, type);
+        lineService.sendResultToLine(result);
         return new ResultBean<>(parseInfoService.parse(response, city, district, type));
 
     }
