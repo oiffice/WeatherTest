@@ -9,3 +9,6 @@ Therefore I develop a experimental project let the message send to my line accou
 
 Ensure that I can get the weather information from rest api
 And AOP is successful
+
+## Version II
+Add line bot that ensure end user and line user can receive the message from api request
