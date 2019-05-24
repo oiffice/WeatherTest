@@ -6,6 +6,10 @@ import york.test.weatherTest.dto.WeatherElement;
 import york.test.weatherTest.dto.WeatherResultDTO;
 import york.test.weatherTest.dto.WeatherTime;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class ParseInfoService {
 
@@ -13,6 +17,9 @@ public class ParseInfoService {
     public static final String CHANCE_OF_RAIN_6_HOURS = "PoP6h";
     public static final String WEATHER_DESCRIPTION = "WeatherDescription";
     public static final String TEMPERATURE = "AT";
+    private String todayDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            .format(new Date(System.currentTimeMillis()))
+            .split(" ")[0];
 
     public String parse(WeatherResultDTO result, String city, String district, String type) throws Exception {
 
@@ -52,18 +59,19 @@ public class ParseInfoService {
                             .findFirst()
                             .get();
 
-                    // TODO: maybe other days
-                    // today information is index 0
-                    WeatherTime weatherTimeStart = weatherElement.getTimes().get(0);
+                    stringBuilder.append(formatOutput(city, district, weatherElement.getDescription()));
 
-                    return stringBuilder
-                            .append(formatOutput(city, district, weatherElement.getDescription()))
-                            .append(weatherTimeStart.getStartTime())
-                            .append(" - ")
-                            .append(weatherTimeStart.getEndTime())
-                            .append("\n降雨機率: ")
-                            .append(weatherTimeStart.getElementValues().get(0).getValue())
-                            .append("%").toString();
+                    weatherElement.getTimes().stream()
+                            .filter(weatherTime -> (weatherTime.getEndTime().split(" ")[0].equals(todayDate) ||
+                                    weatherTime.getStartTime().split(" ")[0].equals(todayDate)))
+                            .forEach(weatherTime ->
+
+                                    this.templateStringBuilder(stringBuilder, "\n",
+                                            weatherTime.getStartTime(), " - ", weatherTime.getEndTime(),"\n降雨機率: ",
+                                            weatherTime.getElementValues().get(0).getValue(), "%")
+                            );
+
+                    return stringBuilder.toString();
                 }).findFirst().get();
     }
 
@@ -92,20 +100,28 @@ public class ParseInfoService {
                 .findFirst()
                 .get();
 
-        String description = weatherElement.getDescription();
-        String descriptionPrefix = description.substring(0,4);
-        String descriptions = String.join("\n", weatherElement.getTimes().get(0).getElementValues().get(0).getValue().split("。"));
-        // TODO: time compared
-        return stringBuilder
+        stringBuilder
                 .append(formatOutput(city, district, weatherElement.getDescription()))
-                .append(weatherElement.getTimes().get(0).getStartTime())
-                .append(" - ")
-                .append(weatherElement.getTimes().get(0).getEndTime())
-                .append("\n")
-                .append(descriptionPrefix)
-                .append(":")
-                .append(descriptions)
-                .toString();
+                .append("\n");
+
+        List<WeatherTime> weatherTimes = weatherElement.getTimes();
+        weatherTimes.stream()
+                .filter(weatherTime -> (weatherTime.getEndTime().split(" ")[0].equals(todayDate) ||
+                        weatherTime.getStartTime().split(" ")[0].equals(todayDate)))
+                .forEach(weatherTime -> {
+                    StringBuilder elementValueBuilder = new StringBuilder();
+
+                    weatherTime.getElementValues().forEach(elementValue -> elementValueBuilder
+                                .append(elementValue.getValue())
+                                .append("\n"));
+
+                    this.templateStringBuilder(stringBuilder,
+                            weatherTime.getStartTime(), " - ", weatherTime.getEndTime(), "\n",
+                            elementValueBuilder.toString(), "\n");
+
+                });
+
+        return stringBuilder.toString();
     }
 
     private String temperature(WeatherResultDTO weatherResult, String city, String district) {
@@ -129,19 +145,33 @@ public class ParseInfoService {
                 .findFirst()
                 .get();
 
-        String measure = weatherElement.getTimes().get(0).getElementValues().get(0).getMeasures();;
+
+        String measure = weatherElement.getTimes().get(0).getElementValues().get(0).getMeasures();
         String descriptionPrefix = measure.substring(0, 2);
         String descriptionPostfix = measure.substring(measure.length() - 1);
 
-        return stringBuilder
-                .append(formatOutput(city, district, weatherElement.getDescription()))
-                .append(weatherElement.getTimes().get(0).getDataTime())
-                .append(" ")
-                .append(descriptionPrefix)
-                .append(weatherElement.getTimes().get(0).getElementValues().get(0).getValue())
-                .append(" ")
-                .append(descriptionPostfix)
-                .toString();
+        stringBuilder.append(formatOutput(city, district, weatherElement.getDescription()));
+
+        weatherElement.getTimes()
+                .stream()
+                .filter(weatherTime -> weatherTime.getDataTime().split(" ")[0].equals(todayDate))
+                .forEach(weatherTime ->
+                            this.templateStringBuilder(stringBuilder,
+                                    "\n", weatherTime.getDataTime(), " ",
+                                    descriptionPrefix, weatherTime.getElementValues().get(0).getValue(),
+                                    descriptionPostfix)
+                );
+
+        return stringBuilder.toString();
+    }
+
+    private StringBuilder templateStringBuilder(StringBuilder stringBuilder, String... args ) {
+
+        for (String arg: args) {
+            stringBuilder.append(arg);
+        }
+
+        return stringBuilder;
     }
 
     private String formatOutput(String city, String district, String description) {
@@ -152,7 +182,7 @@ public class ParseInfoService {
                 .append(district)
                 .append("\n")
                 .append(description)
-                .append("\n時間 ")
+                .append("\n")
                 .toString();
     }
 }

@@ -14,5 +14,7 @@ public class PushService {
     @Scheduled(cron = "0 * * * * *")
     public void pushWeatherMessageMorning() throws Exception  {
         weatherService.fetchWeatherData("新北市", "汐止區", ParseInfoService.WEATHER_DESCRIPTION);
+        weatherService.fetchWeatherData("新北市", "汐止區", ParseInfoService.TEMPERATURE);
+        weatherService.fetchWeatherData("新北市", "汐止區", ParseInfoService.CHANCE_OF_RAIN_6_HOURS);
     }
 }
