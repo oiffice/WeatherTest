@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import york.test.weatherTest.Cities;
+import york.test.weatherTest.enums.Cities;
 import york.test.weatherTest.bean.ResultBean;
 import york.test.weatherTest.dto.District;
 import york.test.weatherTest.dto.TaiwanDistricts;
