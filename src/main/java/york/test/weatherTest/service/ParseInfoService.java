@@ -30,7 +30,7 @@ public class ParseInfoService {
         } else if (type.equals(TEMPERATURE)) {
             return this.temperature(result, city, district);
         } else {
-            throw new InvalidArgumentException(new String[]{type + " is not available"});
+            throw new IllegalArgumentException(type + " is not available");
         }
     }
 
