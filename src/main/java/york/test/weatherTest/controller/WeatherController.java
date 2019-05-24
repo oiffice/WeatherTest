@@ -18,17 +18,22 @@ public class WeatherController {
 
     @RequestMapping("/today/12/rain")
     public ResultBean fetchToday12Rain(@RequestParam String cityInEn, @RequestParam String districts) throws Exception {
-        return weatherService.fetchTodayRain(cityInEn, districts, ParseInfoService.CHANCE_OF_RAIN_12_HOURS);
+        return weatherService.fetchWeatherData(cityInEn, districts, ParseInfoService.CHANCE_OF_RAIN_12_HOURS);
     }
 
     @RequestMapping("/today/6/rain")
     public ResultBean fetchToday6Rain(@RequestParam String cityInEn, @RequestParam String districts) throws Exception {
-        return weatherService.fetchTodayRain(cityInEn, districts, ParseInfoService.CHANCE_OF_RAIN_6_HOURS);
+        return weatherService.fetchWeatherData(cityInEn, districts, ParseInfoService.CHANCE_OF_RAIN_6_HOURS);
     }
 
     @RequestMapping("/today/description")
     public ResultBean fetchTodayWeatherDesc(@RequestParam String cityInEn, @RequestParam String districts) throws Exception {
-        return weatherService.fetchTodayWeatherDesc(cityInEn, districts);
+        return weatherService.fetchWeatherData(cityInEn, districts, ParseInfoService.WEATHER_DESCRIPTION);
+    }
+
+    @RequestMapping("/today/temperature")
+    public ResultBean fetchTodayTemperature(@RequestParam String cityInEn, @RequestParam String districts) throws Exception {
+        return weatherService.fetchWeatherData(cityInEn, districts, ParseInfoService.TEMPERATURE);
     }
 
     @RequestMapping("/sevenDays")
