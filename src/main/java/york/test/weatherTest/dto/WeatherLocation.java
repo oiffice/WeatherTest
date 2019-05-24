@@ -14,7 +14,7 @@ import java.util.List;
 public class WeatherLocation implements Serializable {
 
     @JsonProperty("locationName")
-    private String districts;
+    private String district;
     @JsonProperty("geocode")
     private String geoCode;
     private String lat;

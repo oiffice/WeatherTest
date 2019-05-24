@@ -10,14 +10,26 @@ public class ParseInfoService {
 
     public static final String CHANCE_OF_RAIN_12_HOURS = "PoP12h";
     public static final String CHANCE_OF_RAIN_6_HOURS = "PoP6h";
+    public static final String WEATHER_DESCRIPTION = "WeatherDescription";
+
+    private String formatOutput(String city, String district, String decription) {
+        return new StringBuilder()
+                .append("地區:")
+                .append(city)
+                .append(",")
+                .append(district)
+                .append("\n")
+                .append(decription)
+                .append("\n時間")
+                .toString();
+    }
 
     /**
-     * 解析12小時降雨機率
+     * 解析 6 or 12小時降雨機率
      * @return
      */
     public String parsePoP(WeatherResultDTO weatherResult, String city, String district, String interval) {
 
-        // TODO: only taipei currently
         StringBuilder stringBuilder = new StringBuilder();
 
         return weatherResult
@@ -29,7 +41,7 @@ public class ParseInfoService {
                 .get()
                 .getLocations()
                 .stream()
-                .filter(districts -> district.equals(districts.getDistricts()))
+                .filter(districts -> district.equals(districts.getDistrict()))
                 .map(location -> {
                     WeatherElement weatherElement = location.getWeatherElements()
                             .stream()
@@ -37,28 +49,53 @@ public class ParseInfoService {
                             .findFirst()
                             .get();
 
+                    // TODO: maybe other days
                     // today information is index 0
                     WeatherTime weatherTimeStart = weatherElement.getTimes().get(0);
 
-                    String pop = stringBuilder
-                            .append("時間:")
+                    return stringBuilder
+                            .append(formatOutput(city, district, weatherElement.getDescription()))
                             .append(weatherTimeStart.getStartTime())
                             .append(" - ")
                             .append(weatherTimeStart.getEndTime())
                             .append("\n降雨機率: ")
                             .append(weatherTimeStart.getElementValues().get(0).getValue())
                             .append("%").toString();
-
-                    // reset string builder
-                    stringBuilder.setLength(0);
-
-                    // TODO: time compared?
-                    return stringBuilder
-                            .append("地區:").append(city).append(",").append(location.getDistricts()).append("\n")
-                            .append(weatherElement.getDescription())
-                            .append(pop)
-                            .toString();
-
                 }).findFirst().get();
+    }
+
+    /**
+     * 解析天氣概況
+     * @return
+     */
+    public String weatherDescription(WeatherResultDTO weatherResult, String city, String district) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        WeatherElement weatherElement = weatherResult
+                .getRecords()
+                .getCities()
+                .stream()
+                .filter(weatherCity -> weatherCity.getLocationsName().equals(city))
+                .findFirst()
+                .get()
+                .getLocations()
+                .stream()
+                .filter(weatherLocation -> weatherLocation.getDistrict().equals(district))
+                .findFirst()
+                .get()
+                .getWeatherElements()
+                .stream()
+                .filter(element -> element.getElementName().equals(WEATHER_DESCRIPTION))
+                .findFirst()
+                .get();
+
+        // TODO: time compared
+        return stringBuilder
+                .append(formatOutput(city, district, weatherElement.getDescription()))
+                .append(weatherElement.getTimes().get(0).getStartTime())
+                .append(" - ")
+                .append(weatherElement.getTimes().get(0).getEndTime())
+                .append(weatherElement.getTimes().get(0).getElementValues().get(0).getValue())
+                .toString();
     }
 }

@@ -26,6 +26,11 @@ public class WeatherController {
         return weatherService.fetchTodayRain(cityInEn, districts, ParseInfoService.CHANCE_OF_RAIN_6_HOURS);
     }
 
+    @RequestMapping("/today/description")
+    public ResultBean fetchTodayWeatherDesc(@RequestParam String cityInEn, @RequestParam String districts) throws Exception {
+        return weatherService.fetchTodayWeatherDesc(cityInEn, districts);
+    }
+
     @RequestMapping("/sevenDays")
     public ResultBean fetchSevenDays(@RequestParam String cityInEn) {
         return new ResultBean<>();
