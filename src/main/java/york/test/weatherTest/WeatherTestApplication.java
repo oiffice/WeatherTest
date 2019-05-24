@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import york.test.weatherTest.config.LineProperties;
 import york.test.weatherTest.config.WeatherProperties;
 
-@EnableConfigurationProperties(value = {WeatherProperties.class, LineProperties.class})
 @SpringBootApplication
+@EnableConfigurationProperties(value = {WeatherProperties.class, LineProperties.class})
 public class WeatherTestApplication {
 
 	public static void main(String[] args) {

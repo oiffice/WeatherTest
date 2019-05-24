@@ -92,13 +92,19 @@ public class ParseInfoService {
                 .findFirst()
                 .get();
 
+        String description = weatherElement.getDescription();
+        String descriptionPrefix = description.substring(0,4);
+        String descriptions = String.join("\n", weatherElement.getTimes().get(0).getElementValues().get(0).getValue().split("。"));
         // TODO: time compared
         return stringBuilder
                 .append(formatOutput(city, district, weatherElement.getDescription()))
                 .append(weatherElement.getTimes().get(0).getStartTime())
                 .append(" - ")
                 .append(weatherElement.getTimes().get(0).getEndTime())
-                .append(weatherElement.getTimes().get(0).getElementValues().get(0).getValue())
+                .append("\n")
+                .append(descriptionPrefix)
+                .append(":")
+                .append(descriptions)
                 .toString();
     }
 
@@ -146,7 +152,7 @@ public class ParseInfoService {
                 .append(district)
                 .append("\n")
                 .append(description)
-                .append("\n時間")
+                .append("\n時間 ")
                 .toString();
     }
 }

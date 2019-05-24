@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.ResourceUtils;
 import york.test.weatherTest.config.CWBRequestBuilder;
 import york.test.weatherTest.dto.TaiwanDistrictsDTO;
@@ -13,6 +14,7 @@ import york.test.weatherTest.service.CWBRequestService;
 import java.io.File;
 
 @Configuration
+@EnableScheduling
 public class ConfigurationBeans {
 
     @Bean
