@@ -6,8 +6,7 @@ cwb:
 
 line:
   bot:
-    channelToken: LINE_CHANNEL_SERCRET
-    channelSecret: LINE_CHANNEL_TOKEN
+    channelToken: LINE_CHANNEL_TOKEN
+    channelSecret: LINE_CHANNEL_SECRET
   ids:
     - LINE_USER_ID
--
