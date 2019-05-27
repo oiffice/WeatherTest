@@ -1,12 +1,13 @@
 cwb:
-  token: token
+  token: CWB_TOKEN
   query:
     format: json
     elements: PoP12h,AT,WeatherDescription,PoP6h
 
 line:
   bot:
-    channelToken: channelToken
-    channelSecret: secret
+    channelToken: LINE_CHANNEL_SERCRET
+    channelSecret: LINE_CHANNEL_TOKEN
   ids:
-    - id
+    - LINE_USER_ID
+-
