@@ -10,4 +10,3 @@ line:
     channelSecret: LINE_CHANNEL_TOKEN
   ids:
     - LINE_USER_ID
--
