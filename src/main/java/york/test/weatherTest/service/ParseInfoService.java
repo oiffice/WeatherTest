@@ -1,14 +1,15 @@
 package york.test.weatherTest.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import york.test.weatherTest.TimeUtil;
 import york.test.weatherTest.dto.WeatherElement;
 import york.test.weatherTest.dto.WeatherResultDTO;
 import york.test.weatherTest.dto.WeatherTime;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class ParseInfoService {
 
@@ -16,9 +17,6 @@ public class ParseInfoService {
     public static final String CHANCE_OF_RAIN_6_HOURS = "PoP6h";
     public static final String WEATHER_DESCRIPTION = "WeatherDescription";
     public static final String TEMPERATURE = "AT";
-    private String todayDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            .format(new Date(System.currentTimeMillis()))
-            .split(" ")[0];
 
     public String parse(WeatherResultDTO result, String city, String district, String type) {
 
@@ -40,6 +38,7 @@ public class ParseInfoService {
     private String parsePoP(WeatherResultDTO weatherResult, String city, String district, String interval) {
 
         StringBuilder stringBuilder = new StringBuilder();
+        String todayDate = TimeUtil.getTodayDate();
 
         return weatherResult
                 .getRecords()
@@ -80,6 +79,7 @@ public class ParseInfoService {
      */
     private String weatherDescription(WeatherResultDTO weatherResult, String city, String district) {
         StringBuilder stringBuilder = new StringBuilder();
+        String todayDate = TimeUtil.getTodayDate();
 
         WeatherElement weatherElement = weatherResult
                 .getRecords()
@@ -125,6 +125,7 @@ public class ParseInfoService {
 
     private String temperature(WeatherResultDTO weatherResult, String city, String district) {
         StringBuilder stringBuilder = new StringBuilder();
+        String todayDate = TimeUtil.getTodayDate();
 
         WeatherElement weatherElement = weatherResult
                 .getRecords()
@@ -143,7 +144,6 @@ public class ParseInfoService {
                 .filter(element -> element.getElementName().equals(TEMPERATURE))
                 .findFirst()
                 .get();
-
 
         String measure = weatherElement.getTimes().get(0).getElementValues().get(0).getMeasures();
         String descriptionPrefix = measure.substring(0, 2);

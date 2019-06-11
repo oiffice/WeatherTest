@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.ResourceUtils;
 import york.test.weatherTest.config.CWBRequestBuilder;
 import york.test.weatherTest.dto.TaiwanDistrictsDTO;
 import york.test.weatherTest.enums.CWBConstants;
 import york.test.weatherTest.service.CWBRequestService;
-
-import java.io.File;
 
 @Configuration
 @EnableScheduling
@@ -31,13 +29,10 @@ public class ConfigurationBeans {
     @Bean("TaiwanDistrictsDTO")
     public TaiwanDistrictsDTO taiwanDistricts() throws Exception {
 
-        File file = ResourceUtils.getFile("classpath:districts.json");
-        if (!file.exists()) {
-            throw new RuntimeException("Missing Taiwan districts.json");
-        }
+        ClassPathResource resource = new ClassPathResource("districts.json");
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return objectMapper.readValue(file, TaiwanDistrictsDTO.class);
+        return objectMapper.readValue(resource.getInputStream(), TaiwanDistrictsDTO.class);
     }
 }
