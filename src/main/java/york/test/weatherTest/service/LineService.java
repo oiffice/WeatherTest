@@ -29,8 +29,5 @@ public class LineService {
             final PushMessage pushMessage = new PushMessage(id, textMessage);
             client.pushMessage(pushMessage);
         });
-
-
-
     }
 }
