@@ -3,9 +3,9 @@ package york.test.weatherTest.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import york.test.weatherTest.bean.ResultBean;
 import york.test.weatherTest.service.ParseInfoService;
 import york.test.weatherTest.service.WeatherService;
-import york.test.weatherTest.bean.ResultBean;
 
 import javax.inject.Inject;
 
